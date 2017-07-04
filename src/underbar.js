@@ -206,7 +206,7 @@
       if (Boolean(iterator(elem)) !== acc) {
         return false;
       } else {
-        return true;
+        return acc;
       }
     }, true);
   };
@@ -215,6 +215,14 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    return _.reduce(collection, function(acc,elem) {
+      iterator = iterator === undefined ? _.identity : iterator;
+      if (Boolean(iterator(elem)) !== acc) {
+        return true;
+      } else {
+        return acc;
+      }
+    }, false);
   };
 
 
