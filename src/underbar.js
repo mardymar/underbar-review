@@ -201,7 +201,14 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-    return _.reduce(collection, iterator, true);
+    return _.reduce(collection, function(acc, elem) {
+      iterator = iterator === undefined ? _.identity : iterator;
+      if (Boolean(iterator(elem)) !== acc) {
+        return false;
+      } else {
+        return true;
+      }
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
@@ -235,13 +242,13 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
-    _.each(arguments, function(arg){
-      _.each(arg, function(val, key){
-        if(obj[key] === undefined) {
+    _.each (arguments, function(arg) {
+      _.each (arg, function(val, key) {
+        if (obj[key] === undefined) {
           obj[key] = val;
         }
-      })
-    })
+      });
+    });
 
     return obj;
   };
@@ -289,15 +296,15 @@
   _.memoize = function(func) {
     var results = {};
 
-    var returnFunc = function(){
+    var returnFunc = function() {
       var args = JSON.stringify(arguments);
 
-      if(results[args] === undefined){
+      if (results[args] === undefined) {
         results[args] = func.apply(this, arguments);
       }
 
       return results[args];
-    }
+    };
 
     return returnFunc;
 
@@ -311,11 +318,11 @@
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
     var args = [];
-    for(var i = 2; i < arguments.length; i++){
+    for (var i = 2; i < arguments.length; i++) {
       args.push(arguments[i]);
     }
 
-    setTimeout(function(){func.apply(this, args)}, wait);
+    setTimeout(function() { func.apply(this, args); }, wait);
 
   };
 
@@ -333,7 +340,7 @@
   _.shuffle = function(array) {
     var arr = array.slice();
 
-    for(var i = array.length - 1; i > 0; i--) {
+    for (var i = array.length - 1; i > 0; i--) {
       var rand = Math.floor(Math.random() * i);
 
       var temp = arr[rand];
