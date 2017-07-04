@@ -202,13 +202,28 @@
   // Determine whether all of the elements match a truth test.
   _.every = function (collection, iterator) {
     // TIP: Try re-using reduce() here.
-    return _.reduce(collection, iterator, true);
+    return _.reduce(collection, function(acc, elem) {
+      iterator = iterator === undefined ? _.identity : iterator;
+      if (Boolean(iterator(elem)) !== acc) {
+        return false;
+      } else {
+        return acc;
+      }
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function (collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    return _.reduce(collection, function(acc,elem) {
+      iterator = iterator === undefined ? _.identity : iterator;
+      if (Boolean(iterator(elem)) !== acc) {
+        return true;
+      } else {
+        return acc;
+      }
+    }, false);
   };
 
 
@@ -242,13 +257,14 @@
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
-  _.defaults = function (obj) {
-    _.each(arguments, function (arg) {
-      _.each(arg, function (val, key) {
+
+  _.defaults = function(obj) {
+    _.each (arguments, function(arg) {
+      _.each (arg, function(val, key) {
         if (obj[key] === undefined) {
           obj[key] = val;
         }
-      })
+      });
     });
 
     return obj;
@@ -297,7 +313,8 @@
   _.memoize = function (func) {
     var results = {};
 
-    var returnFunc = function () {
+    var returnFunc = function() {
+
       var args = JSON.stringify(arguments);
 
       if (results[args] === undefined) {
@@ -305,7 +322,7 @@
       }
 
       return results[args];
-    }
+    };
 
     return returnFunc;
 
@@ -323,9 +340,8 @@
       args.push(arguments[i]);
     }
 
-    setTimeout(function () {
-      func.apply(this, args)
-    }, wait);
+
+    setTimeout(function() { func.apply(this, args); }, wait);
 
   };
 
