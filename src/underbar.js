@@ -344,7 +344,7 @@
     var arr = array.slice();
 
     for (var i = array.length - 1; i > 0; i--) {
-      var rand = Math.floor(Math.random() * i);
+      var rand = Math.floor(Math.random() * (i + 1));
 
       var temp = arr[rand];
       arr[rand] = arr[i];
