@@ -37,7 +37,7 @@
 
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
-  _.last = function (array, n) {
+  _.last = function(array, n) {
     if (n === 0) {
       return [];
     }
@@ -84,7 +84,7 @@
   _.filter = function (collection, test) {
     var results = [];
 
-    _.each(collection, function (val) {
+    _.each(collection, function(val) {
       if (test(val)) {
         results.push(val);
       }
@@ -98,7 +98,8 @@
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
 
-    return _.filter(collection, function (val) {
+
+    return _.filter(collection, function(val) {
       return !test(val);
     });
   };
@@ -113,7 +114,7 @@
     }
 
     for (var key in obj) {
-      newArr.push(obj[key])
+      newArr.push(obj[key]);
     }
 
     return newArr;
@@ -125,6 +126,11 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    var result = [];
+    _.each(collection, function(elem) {
+      result.push(iterator(elem));
+    });
+    return result;
   };
 
   /*
@@ -165,7 +171,19 @@
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
-  _.reduce = function (collection, iterator, accumulator) {
+  _.reduce = function(collection, iterator, accumulator) {
+    // 
+    if (accumulator === undefined) {
+      accumulator = collection[0];
+      _.each(collection.slice(1), function(elem) {
+        accumulator = iterator(accumulator, elem);
+      });
+    } else {
+      _.each(collection, function(elem) {
+        accumulator = iterator(accumulator, elem);
+      });
+    }
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -184,6 +202,7 @@
   // Determine whether all of the elements match a truth test.
   _.every = function (collection, iterator) {
     // TIP: Try re-using reduce() here.
+    return _.reduce(collection, iterator, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
