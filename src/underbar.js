@@ -216,7 +216,7 @@
   // provided, provide a default one
   _.some = function (collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    return _.reduce(collection, function(acc,elem) {
+    return _.reduce(collection, function(acc, elem) {
       iterator = iterator === undefined ? _.identity : iterator;
       if (Boolean(iterator(elem)) !== acc) {
         return true;
@@ -249,7 +249,7 @@
     _.each(arguments, function (arg) {
       _.each(arg, function (val, key) {
         obj[key] = val;
-      })
+      });
     });
 
     return obj;
@@ -312,7 +312,6 @@
   // instead if possible.
   _.memoize = function (func) {
     var results = {};
-
     var returnFunc = function() {
 
       var args = JSON.stringify(arguments);
@@ -339,7 +338,6 @@
     for (var i = 2; i < arguments.length; i++) {
       args.push(arguments[i]);
     }
-
 
     setTimeout(function() { func.apply(this, args); }, wait);
 
